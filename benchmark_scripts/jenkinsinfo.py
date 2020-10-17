@@ -4,8 +4,8 @@ import json
 from flatten_dict import flatten
 import csv
 
-username = 'bajo1207'
-password = 'q5N634hyZvoI'
+username = ''
+password = ''
 url = 'http://3.90.248.12:8080/'
 jobs = []
 for n in range(217,318):
