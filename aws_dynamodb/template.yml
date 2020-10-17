@@ -1,0 +1,99 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+
+Parameters:
+  TABLENAME:
+    Type: String
+    Description: The DynamoDB table for storing Person information.
+    Default: 'TodoTable'
+Globals:
+  Function:
+    Timeout: 3
+    Runtime: python3.8
+    CodeUri: todos/
+    Environment:
+      Variables:
+        DYNAMODB_TABLE: !Ref TABLENAME
+  
+  Api:
+    Cors:
+      AllowMethods: "'OPTIONS,POST,GET,PUT,DELETE'"
+      AllowHeaders: "'Content-Type'"
+      AllowOrigin: "'*'"
+        
+Resources:
+  CreateFunction:
+    Type: AWS::Serverless::Function 
+    Properties:
+      Policies: AmazonDynamoDBFullAccess
+      Handler: create.create
+      Events:
+        Create:
+          Type: Api 
+          Properties:
+            Path: /todos
+            Method: post
+
+  DeleteFunction:
+    Type: AWS::Serverless::Function 
+    Properties:
+      Policies: AmazonDynamoDBFullAccess
+      Handler: delete.delete
+      Events:
+        Delete:
+          Type: Api 
+          Properties:
+            Path: /todos/{id}
+            Method: delete
+
+  GetFunction:
+    Type: AWS::Serverless::Function 
+    Properties:
+      Policies: AmazonDynamoDBFullAccess
+      Handler: get.get
+      Events:
+        Get:
+          Type: Api 
+          Properties:
+            Path: /todos/{id}
+            Method: get
+
+  ListFunction:
+    Type: AWS::Serverless::Function 
+    Properties:
+      Policies: AmazonDynamoDBFullAccess
+      Handler: list.list
+      Events:
+        List:
+          Type: Api 
+          Properties:
+            Path: /todos
+            Method: get
+  
+  UpdateFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Policies: AmazonDynamoDBFullAccess
+      Handler: update.update
+      Events:
+        Update:
+          Type: Api
+          Properties:
+            Path: /todos/{id}
+            Method: put
+
+  DynamoDBTable:
+    Type: AWS::DynamoDB::Table
+    Properties: 
+      AttributeDefinitions: 
+        - AttributeName: id
+          AttributeType: S
+      KeySchema: 
+        - AttributeName: id
+          KeyType: HASH
+      ProvisionedThroughput: 
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1
+      StreamSpecification:
+        StreamViewType: NEW_IMAGE
+      TableName: !Ref TABLENAME

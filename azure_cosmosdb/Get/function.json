@@ -1,0 +1,30 @@
+{
+  "scriptFile": "__init__.py",
+  "bindings": [
+    {
+      "authLevel": "anonymous",
+      "type": "httpTrigger",
+      "direction": "in",
+      "name": "req",
+      "methods": [
+        "get"
+      ],
+      "route": "Get/{id}"
+    },
+    {
+      "type": "http",
+      "direction": "out",
+      "name": "$return"
+    },
+    {
+      "type": "cosmosDB",
+      "direction": "in",
+      "name": "cosmosdb",
+      "databaseName": "todos-python",
+      "collectionName": "todos-python-container",
+      "connectionStringSetting": "CosmosDBConnection",
+      "id":"{id}",
+      "partitionKey":"{id}"
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+pipeline {
+agent {
+  docker {
+    image 'python-docker-sam-pytest:latest'
+    args '-v /var/run/docker.sock:/var/run/docker.sock --network dynamoNet'
+  }
+}
+    stages {
+        stage('Build') {
+            steps {
+              dir('azure_cosmosdb'){
+                    sh """
+                    mv /local.settings.json .
+                    pip install -r requirements.txt 
+                    """
+              }
+            }
+        }
+        stage('Test') {
+          steps {
+              dir('azure_cosmosdb') {
+                sh """
+                func start&
+                pytest
+                """
+              }
+          }
+        }
+    }
+}

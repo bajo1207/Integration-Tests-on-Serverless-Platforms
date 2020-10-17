@@ -1,0 +1,32 @@
+pipeline {
+agent {
+  docker {
+    image 'python-docker-sam-pytest:latest'
+    args '-v /var/run/docker.sock:/var/run/docker.sock --network dynamoNet'
+  }
+}
+    stages {
+        stage('Build') {
+            steps {
+              dir('google_firestore'){
+                    sh """
+                    pip install flask
+                    pip install invoke
+                    pip install google-cloud-firestore
+                    """
+              }
+            }
+        }
+        stage('Test') {
+          steps {
+              dir('google_firestore') {
+                sh """
+                export GOOGLE_APPLICATION_CREDENTIALS="/google-ff-fire-049ca6dc6e71.json"
+                invoke start &
+                pytest
+                """
+              }
+          }
+        }
+    }
+}

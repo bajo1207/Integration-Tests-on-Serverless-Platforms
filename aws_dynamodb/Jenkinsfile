@@ -1,0 +1,32 @@
+pipeline {
+agent {
+  docker {
+    image 'python-docker-sam-pytest:latest'
+    args '-v /var/run/docker.sock:/var/run/docker.sock --network dynamoNet'
+  }
+}
+    stages {
+        stage('Build') {
+            steps {
+              dir('aws_dynamodb'){
+                    sh """
+                    sam build
+                    aws configure set default.region ${AWS_DEFAULT_REGION}
+                    aws configure set aws_access_key_id ${AWS_ACCESS_KEY_ID}
+                    aws configure set aws_secret_access_key ${AWS_SECRET_ACCESS_KEY}
+                    """
+              }
+            }
+        }
+        stage('Test') {
+          steps {
+              dir('aws_dynamodb') {
+                sh """
+                sam local start-lambda --host 0.0.0.0 --docker-network dynamoNet -v "${HOSTPATH}/.jenkins_home/workspace/${JOB_BASE_NAME}/${JOB_BASE_NAME}/.aws-sam/build" &
+                pytest -s
+                """
+              }
+          }
+        }
+    }
+}
