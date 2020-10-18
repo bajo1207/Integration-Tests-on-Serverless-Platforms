@@ -1,5 +1,5 @@
 # Benchmark scripts
-Create python virtual environment an install all required packages using the following command.
+Create `python virtual environment` an install all required packages using the following command.
 ```{bash}
 pip install -r requirements.txt
 ```
