@@ -1,13 +1,13 @@
 # Integration Tests on Serverless Platforms
 
-A benchmark of different tools for integration testing in serverless.
+— A benchmark of different tools for integration testing in serverless.
 
 * [aws_dynamodb](https://github.com/bajo1207/Integration-Tests-on-Serverless-Platforms/tree/main/aws_dynamodb), [azure_cosmosdb](https://github.com/bajo1207/Integration-Tests-on-Serverless-Platforms/tree/main/azure_cosmosdb) and [google_firestore](https://github.com/bajo1207/Integration-Tests-on-Serverless-Platforms/tree/main/google_firestore) contains the respective todo applications and serverless frameworks for wich the bechmark was created.
-The to do application is created as equally as possible for all the providers, as shown in the picture below.
+The todo application is created as equally as possible for all the providers, as shown in the picture below.
 
-* The applications is tested using jenkins continous integration server. The jenkins server can be found in [jenkins_container](https://github.com/bajo1207/Integration-Tests-on-Serverless-Platforms/tree/main/jenkins_container).
+* The applications are tested using Jenkins continuous integration server. The Jenkins server can be found in [jenkins_container](https://github.com/bajo1207/Integration-Tests-on-Serverless-Platforms/tree/main/jenkins_container).
 
-* The python container used to execute the tests within the jenkins container can be found in [python_container](https://github.com/bajo1207/Integration-Tests-on-Serverless-Platforms/tree/main/python_container).
+* The python container used to execute the tests within the Jenkins container can be found in [python_container](https://github.com/bajo1207/Integration-Tests-on-Serverless-Platforms/tree/main/python_container).
 
 * The analysis of the benchmark can be found in [data_analysis](https://github.com/bajo1207/Integration-Tests-on-Serverless-Platforms/tree/main/data_analysis).
 
@@ -26,11 +26,11 @@ The frontend is based on [this tutorial.](https://freshman.tech/todo-list/)
    ```{bash}
    sam build --guided
    ``` 
-   Follow the instructions in the command line. All nessecary resources will be created.
+   Follow the instructions in the command line. All necessary resources will be created.
 
    2. Get credentials to access the created DynamoDB table in AWS. And put them in the docker-compose file in [jenkins_container](https://github.com/bajo1207/Integration-Tests-on-Serverless-Platforms/tree/main/jenkins_container)
 
-   2. (Optional) If the emulated version of DynamoDB should be used, the following needs to be added to the Jenkins file in the buld stage:
+   2. (Optional) If the emulated version of DynamoDB should be used, the following needs to be added to the Jenkins file in the build stage:
    ```{bash}
     docker run --rm -d -p 8000:8000 --network dynamoNet --name dynamo amazon/dynamodb-local
     aws dynamodb create-table --cli-input-json file://create_todo_table.json --endpoint-url http://dynamo:8000
@@ -41,7 +41,7 @@ The frontend is based on [this tutorial.](https://freshman.tech/todo-list/)
    func init
    ```
    2. Create a [CosmosDB](https://azure.microsoft.com/en-us/services/cosmos-db/) database, with partition `key = id`
-   3. Go to the created Azure Functions Application and add the a cosmos key and url to the applications settings parameters
+   3. Go to the created Azure Functions Application and add the cosmos key and URL to the applications settings parameters
    4. Download the Azure Functions plugin for VS code and download the local.settings.json
    5. Replace the local.settings.json in the [python_container](https://github.com/bajo1207/Integration-Tests-on-Serverless-Platforms/tree/main/python_container) with the local.settings.json just downloaded
 
@@ -52,8 +52,8 @@ The frontend is based on [this tutorial.](https://freshman.tech/todo-list/)
    ```{bash}
    docker-compose up
    ```
-1. Follow the instructions to set up the jenkins server – jenkins can be found on `localhost:8080`
-1. Install the `Docker Pipeline plugin` and `Docker plugin` in jenkins
+1. Follow the instructions to set up the Jenkins server – Jenkins can be found on `localhost:8080`
+1. Install the `Docker Pipeline plugin` and `Docker plugin` in Jenkins
 1. Create a pipeline in Jenkins for all the todo applications and point Jenkins to the Jennkinsfile in each application directory
 1. Then build the [python_container](https://github.com/bajo1207/Integration-Tests-on-Serverless-Platforms/tree/main/python_container) using the docker build command:
    ```{bash}
