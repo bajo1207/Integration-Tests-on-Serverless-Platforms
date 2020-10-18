@@ -48,4 +48,13 @@ The frontend is based on [this tutorial.](https://freshman.tech/todo-list/)
    ### Google
    1. Create a Cloud Firestore database and download the credentials
    2. Put the credentials in the [python_container](https://github.com/bajo1207/Integration-Tests-on-Serverless-Platforms/tree/main/python_container) and specify the credentials name in the Docker file and in the Jenkins file
-
+1. Start the Jenkins container with the following command:
+   ```{bash}
+   docker-compose up
+   ```
+1. Follow the instructions to set up the jenkins server – jenkins can be found on `localhost:8080`
+1. Install the `Docker Pipeline plugin` and `Docker plugin` in jenkins
+1. Then build the [python_container](https://github.com/bajo1207/Integration-Tests-on-Serverless-Platforms/tree/main/python_container) using the docker build command:
+   ```{bash}
+   docker build --tag pythoncontainer:latest .
+   ```
