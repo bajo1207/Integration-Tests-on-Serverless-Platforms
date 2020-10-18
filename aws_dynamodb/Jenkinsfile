@@ -1,7 +1,7 @@
 pipeline {
 agent {
   docker {
-    image 'python-docker-sam-pytest:latest'
+    image 'pythoncontainer:latest'
     args '-v /var/run/docker.sock:/var/run/docker.sock --network dynamoNet'
   }
 }
