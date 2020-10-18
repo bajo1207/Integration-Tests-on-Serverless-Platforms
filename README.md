@@ -19,25 +19,33 @@ The frontend is based on [this tutorial.](https://freshman.tech/todo-list/)
 <img width="880" alt="" src="SampleApplication.png">
 
 ## Step by step guide to get everything working
-1. First install the followinng tools: [AWS SAM CLI](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-cli-install.html), [Azure Functions Core Tools](https://github.com/Azure/azure-functions-core-tools) and [Functions Framework](https://cloud.google.com/functions/docs/functions-framework?hl=de)
+1. First install the following tools: [AWS SAM CLI](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-cli-install.html), [Azure Functions Core Tools](https://github.com/Azure/azure-functions-core-tools) and [Functions Framework](https://cloud.google.com/functions/docs/functions-framework?hl=de)
 1. Configure the three applications:
-### AWS
-1. First run the AWS build command: 
-```{bash}
-sam build --guided
-``` 
-Follow the instructions in the command line. All nessecary resources will be created.
+   ### AWS
+   1. First run the AWS build command: 
+   ```{bash}
+   sam build --guided
+   ``` 
+   Follow the instructions in the command line. All nessecary resources will be created.
 
-2. Get credentials to access the created DynamoDB table in AWS. And put them in the docker-compose file in [jenkins_container](https://github.com/bajo1207/Integration-Tests-on-Serverless-Platforms/tree/main/jenkins_container)
+   2. Get credentials to access the created DynamoDB table in AWS. And put them in the docker-compose file in [jenkins_container](https://github.com/bajo1207/Integration-Tests-on-Serverless-Platforms/tree/main/jenkins_container)
 
-2. (Optional) If the emulated version of DynamoDB should be used, the following needs to be added to the Jenkins file in the buld stage:
-```{bash}
- docker run --rm -d -p 8000:8000 --network dynamoNet --name dynamo amazon/dynamodb-local
- aws dynamodb create-table --cli-input-json file://create_todo_table.json --endpoint-url http://dynamo:8000
-```
-### Azure
-1. Run the func init comand, and follow the instrunctions:
-```{bash}
-func init
-```
-2. Create a cosmos db database, with partition key = id
+   2. (Optional) If the emulated version of DynamoDB should be used, the following needs to be added to the Jenkins file in the buld stage:
+   ```{bash}
+    docker run --rm -d -p 8000:8000 --network dynamoNet --name dynamo amazon/dynamodb-local
+    aws dynamodb create-table --cli-input-json file://create_todo_table.json --endpoint-url http://dynamo:8000
+   ```
+   ### Azure
+   1. Run the func init comand, and follow the instrunctions:
+   ```{bash}
+   func init
+   ```
+   2. Create a [CosmosDB](https://azure.microsoft.com/en-us/services/cosmos-db/) database, with partition key = id
+   3. Go to the created Azure Functions Application and add the a cosmos key and url to the applications settings parameters
+   4. Download the Azure Functions plugin for VS code and download the local.settings.json
+   5. Replace the local.settings.json in the [python_container](https://github.com/bajo1207/Integration-Tests-on-Serverless-Platforms/tree/main/python_container) with the local.settings.json just downloaded
+
+   ### Google
+   1. Create a Cloud Firestore database and download the credentials
+   2. Put the credentials in the [python_container](https://github.com/bajo1207/Integration-Tests-on-Serverless-Platforms/tree/main/python_container) and specify the credentials name in the Docker file and in the Jenkins file
+
