@@ -40,7 +40,7 @@ The frontend is based on [this tutorial.](https://freshman.tech/todo-list/)
    ```{bash}
    func init
    ```
-   2. Create a [CosmosDB](https://azure.microsoft.com/en-us/services/cosmos-db/) database, with partition key = id
+   2. Create a [CosmosDB](https://azure.microsoft.com/en-us/services/cosmos-db/) database, with partition `key = id`
    3. Go to the created Azure Functions Application and add the a cosmos key and url to the applications settings parameters
    4. Download the Azure Functions plugin for VS code and download the local.settings.json
    5. Replace the local.settings.json in the [python_container](https://github.com/bajo1207/Integration-Tests-on-Serverless-Platforms/tree/main/python_container) with the local.settings.json just downloaded
@@ -54,7 +54,13 @@ The frontend is based on [this tutorial.](https://freshman.tech/todo-list/)
    ```
 1. Follow the instructions to set up the jenkins server – jenkins can be found on `localhost:8080`
 1. Install the `Docker Pipeline plugin` and `Docker plugin` in jenkins
+1. Create a pipeline in Jenkins for all the todo applications and point Jenkins to the Jennkinsfile in each application directory
 1. Then build the [python_container](https://github.com/bajo1207/Integration-Tests-on-Serverless-Platforms/tree/main/python_container) using the docker build command:
    ```{bash}
    docker build --tag pythoncontainer:latest .
    ```
+1. Create a docker network called `dynamoNet`
+   ```{bash}
+   docker network create
+   ```
+1. Use the scripts in [benchmark_scripts](https://github.com/bajo1207/Integration-Tests-on-Serverless-Platforms/tree/main/benchmark_scripts) to run the benchmark and get the various data
